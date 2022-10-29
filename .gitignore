@@ -1,5 +1,5 @@
-src/main/java/resources/pdfs/**/*.pdf
-src/main/java/resources/pdfs/*.pdf
+src/main/resources/pdfs/**/*.pdf
+src/main/resources/pdfs/*.pdf
 
 # Project exclude paths
 /target/
