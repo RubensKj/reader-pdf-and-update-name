@@ -1,0 +1,3 @@
+src/main/java/resources/pdfs/*
+# Project exclude paths
+/target/
