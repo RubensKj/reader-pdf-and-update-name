@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class PDFsFolder {
 
@@ -22,6 +23,8 @@ public class PDFsFolder {
 
         System.out.println("Read " + paths.size() + " pdfs in the folder...");
 
-        return paths;
+        return paths.stream()
+                .filter(pdfInDirectoryDTO -> pdfInDirectoryDTO.getFileName().endsWith(".pdf"))
+                .collect(Collectors.toList());
     }
 }
