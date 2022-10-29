@@ -21,7 +21,7 @@ public class FileRenamer {
             return;
         }
 
-        System.out.println("Renamed file " + fileName + " to " + formattedFileName);
+        System.out.println("Renamed file \"" + fileName + "\" to \"" + formattedFileName + "\"");
     }
 
     // What the fileName will look like with the id in it.
@@ -30,6 +30,6 @@ public class FileRenamer {
             return fileName;
         }
 
-        return "RBA " +  idByCNPJ + "_" + fileName;
+        return "RBA " + idByCNPJ + "_" + fileName;
     }
 }

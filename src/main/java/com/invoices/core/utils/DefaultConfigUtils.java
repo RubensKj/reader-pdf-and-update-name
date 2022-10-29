@@ -3,7 +3,8 @@ package com.invoices.core.utils;
 import java.io.File;
 
 public class DefaultConfigUtils {
-    public static final String DEFAULT_JSON_CONFIG = System.getProperty("user.home") + File.separator + "Documents\\config-pdfs-renamer.json";
+//    public static final String DEFAULT_JSON_CONFIG = System.getProperty("user.home") + File.separator + "Documents\\config-pdfs-renamer.json";
+    public static final String DEFAULT_JSON_CONFIG = ".\\config-pdfs-renamer.json";
 
 
     public static final String TESSERACT_LANGUAGE = "eng";

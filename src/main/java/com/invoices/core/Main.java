@@ -1,5 +1,6 @@
 package com.invoices.core;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.invoices.core.csv.GenericFileReader;
@@ -16,7 +17,7 @@ public class Main {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     public static void main(String[] args) {
-        readJsonConfig();
+        readJsonConfig(args);
         printConfigText();
         System.out.println("Initializing script renamer pdf with id by CNPJ...\n\n");
 
@@ -27,8 +28,12 @@ public class Main {
         System.out.println("\n\nFinishing the process... Script is over. Everything renamed.");
     }
 
-    private static void readJsonConfig() {
-        String jsonPath = JOptionPane.showInputDialog("Digite o caminho para o arquivo de configuração (JSON):");
+    private static void readJsonConfig(String[] args) {
+        String jsonPath = null;
+
+        if (args.length > 0 && args[0].contains("--config")) {
+            jsonPath = JOptionPane.showInputDialog("Digite o caminho para o arquivo de configuração (JSON):");
+        }
 
         if (isValidPath(jsonPath)) {
             System.out.println("Receive PATH: " + jsonPath);
@@ -41,9 +46,16 @@ public class Main {
 
         GenericFileReader genericFileReader = new GenericFileReader();
 
+        OBJECT_MAPPER.configure(JsonParser.Feature.AUTO_CLOSE_SOURCE, true);
+
         try {
-            List<String> lines = genericFileReader.read(jsonPath, true, OBJECT_MAPPER.writeValueAsString(new DefaultConfigJson()));
+            List<String> lines = genericFileReader.read(jsonPath, true, getDefaultJsonConfig());
             String json = String.join("", lines);
+
+            if (json.isEmpty()) {
+                System.out.println("Error getting content from json config...");
+                return;
+            }
 
             // Will set the ConfigDTO with the params
             ConfigDTO configDTO = OBJECT_MAPPER.readValue(json, ConfigDTO.class);
@@ -52,6 +64,10 @@ public class Main {
             System.err.println("Error parsing config DTO...");
             throw new RuntimeException(e);
         }
+    }
+
+    private static String getDefaultJsonConfig() throws JsonProcessingException {
+        return OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(new DefaultConfigJson());
     }
 
     private static boolean isValidPath(String jsonPath) {

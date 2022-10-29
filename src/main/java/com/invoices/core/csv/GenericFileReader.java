@@ -40,6 +40,7 @@ public class GenericFileReader {
                             content.getBytes(),
                             StandardOpenOption.APPEND);
                     System.out.println("File created...");
+                    return read(filePath);
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
