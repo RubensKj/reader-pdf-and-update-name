@@ -8,6 +8,7 @@ import com.invoices.core.rename.FileRenamer;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class ReaderPDFService {
 
@@ -31,7 +32,7 @@ public class ReaderPDFService {
 
             System.out.println("CNPJs encontrados: " + cnpjsFromText);
 
-            String cnpj = getCnpjFromTomador(cnpjsFromText);
+            String cnpj = tryGetCnpjFromTomador(cnpjsFromText);
 
             if (cnpj == null) {
                 System.out.println("Not found CNPJ in list of cnpjs from image. List size: " + cnpjsFromText.size());
@@ -49,11 +50,30 @@ public class ReaderPDFService {
         }
     }
 
+    private String tryGetCnpjFromTomador(List<String> cnpjsFromText) {
+        try {
+            return getCnpjFromTomador(cnpjsFromText);
+        } catch (Exception e) {
+            return "CNPJ: ERROR GETTING CNPJ FROM LIST";
+        }
+    }
+
     private static String getCnpjFromTomador(List<String> cnpjsFromText) {
-        if (cnpjsFromText.get(1) == null) {
+        ConfigDTO configDTO = ConfigDTO.getInstance();
+
+        Integer indexOfCnpj = configDTO.getIndexOfCnpj();
+
+        if (Objects.isNull(indexOfCnpj)) {
+            System.out.println("Index of CNPJ not configure right, using 0 as default...");
             return cnpjsFromText.get(0);
         }
 
-        return cnpjsFromText.get(1);
+        try {
+            return cnpjsFromText.get(indexOfCnpj);
+        } catch (IndexOutOfBoundsException e) {
+            System.err.println("IndexOutOfBoundsException - Error getting CNPJ by the index. Index: " + indexOfCnpj);
+            System.out.println("Getting with 0 instead...");
+            return cnpjsFromText.get(0);
+        }
     }
 }

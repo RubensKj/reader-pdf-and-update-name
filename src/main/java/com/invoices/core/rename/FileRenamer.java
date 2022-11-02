@@ -1,6 +1,11 @@
 package com.invoices.core.rename;
 
+import com.invoices.core.ConfigDTO;
+
 import java.io.File;
+import java.util.Objects;
+
+import static com.invoices.core.utils.DefaultConfigUtils.ID_REPLACER_KEY;
 
 public class FileRenamer {
 
@@ -11,6 +16,11 @@ public class FileRenamer {
         resolvedPath = resolvedPath.replaceAll(fileName, "");
 
         String formattedFileName = renameFileTo(idByCNPJ, fileName);
+
+        if (Objects.isNull(formattedFileName)) {
+            System.out.println("File is already renamed... Skipping... FileName: " + fileName);
+            return;
+        }
 
         File fileWithNewName = new File(resolvedPath + formattedFileName);
 
@@ -26,10 +36,18 @@ public class FileRenamer {
 
     // What the fileName will look like with the id in it.
     private String renameFileTo(String idByCNPJ, String fileName) {
-        if (fileName.startsWith(idByCNPJ)) {
-            return fileName;
+        String fileNameFormatted = getReplacedFileName(idByCNPJ);
+
+        if (fileName.startsWith(fileNameFormatted)) {
+            return null;
         }
 
-        return "RBA " + idByCNPJ + "_" + fileName;
+        return fileNameFormatted + fileName;
+    }
+
+    private String getReplacedFileName(String idByCNPJ) {
+        ConfigDTO instance = ConfigDTO.getInstance();
+
+        return instance.getFileNameToReplace().replace(ID_REPLACER_KEY, idByCNPJ);
     }
 }

@@ -10,4 +10,7 @@ public class DefaultConfigUtils {
     public static final String TESSERACT_LANGUAGE = "eng";
     public static final String CSV_FILE_PATH = "D:\\workspace\\scripting-job\\src\\main\\resources\\csv_reader.csv";
     public static final String PDFS_NFES = "D:\\workspace\\scripting-job\\src\\main\\resources\\pdfs\\";
+    public static final String ID_REPLACER_KEY = "${id}";
+    public static final String FILENAME_TO_RENAME = "RBA ${id}_";
+    public static final Integer INDEX_OF_CNPJ = 0;
 }

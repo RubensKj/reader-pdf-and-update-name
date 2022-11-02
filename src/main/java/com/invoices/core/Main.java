@@ -84,6 +84,10 @@ public class Main {
         System.out.println("\tCSV_FILE_PATH: " + instance.getCsvFilePath());
         System.out.println("PDFS-CONFIG");
         System.out.println("\tPDFS_NFEs: " + instance.getPdfsNfes());
+        System.out.println("FILENAME-CONFIG");
+        System.out.println("\tFILENAME: " + instance.getFileNameToReplace());
+        System.out.println("INDEX_CNPJ-CONFIG");
+        System.out.println("\tINDEX_CNPJ: " + instance.getIndexOfCnpj());
         System.out.println("---------------------------------------------------------------------------------");
         System.out.println();
     }
